@@ -142,7 +142,39 @@ describe('getWeekDates', () => {
 });
 
 describe('getWeeksAtMonth', () => {
-  it('2024년 7월 1일의 올바른 주 정보를 반환해야 한다', () => {});
+  it('2024년 7월 1일의 올바른 주 정보를 반환해야 한다', () => {
+    const weeksAtMonth = getWeeksAtMonth(new Date('2024-07-01'));
+
+    expect(weeksAtMonth[0]).toContain(1);
+    expect(weeksAtMonth.at(-1)).toContain(31);
+    expect(weeksAtMonth.flat().filter(Boolean).length).toBe(31);
+  });
+
+  it('2025년 2월의 첫째 주에는 적절한 null 값이 포함되어야 한다', () => {
+    const weeksAtMonth = getWeeksAtMonth(new Date('2025-02-01'))[0];
+
+    expect(weeksAtMonth.length).toBe(7);
+    expect(weeksAtMonth[0]).toBeNull();
+    expect(weeksAtMonth[1]).toBeNull();
+    expect(weeksAtMonth[2]).toBeNull();
+    expect(weeksAtMonth[3]).toBeNull();
+    expect(weeksAtMonth[4]).toBeNull();
+    expect(weeksAtMonth[5]).toBeNull();
+    expect(weeksAtMonth[6]).toBe(1);
+  });
+
+  it('2025년 2월의 마지막 주에는 적절한 null 값이 포함되어야 한다', () => {
+    const weeksAtMonth = getWeeksAtMonth(new Date('2025-02-28')).slice(-1)[0];
+
+    expect(weeksAtMonth?.length).toBe(7);
+    expect(weeksAtMonth[0]).toBe(23);
+    expect(weeksAtMonth[1]).toBe(24);
+    expect(weeksAtMonth[2]).toBe(25);
+    expect(weeksAtMonth[3]).toBe(26);
+    expect(weeksAtMonth[4]).toBe(27);
+    expect(weeksAtMonth[5]).toBe(28);
+    expect(weeksAtMonth[6]).toBeNull();
+  });
 });
 
 describe('getEventsForDay', () => {
