@@ -1,6 +1,18 @@
 import { Event } from '../types.ts';
 
 /**
+ * 주어지 년도가 윤년인지 판별합니다.
+ * 윤년: 1년이 366일인 해로 2월이 29일까지 있다.
+ * 평년: 1년이 365일인 해로 2월이 28일까지 있다.
+ */
+export function isLeapYear(year: number) {
+  if (year % 400 === 0) return true;
+  if (year % 100 === 0) return false;
+  if (year % 4 === 0) return true;
+  return false;
+}
+
+/**
  * 주어진 년도와 월의 일수를 반환합니다.
  */
 export function getDaysInMonth(year: number, month: number): number {

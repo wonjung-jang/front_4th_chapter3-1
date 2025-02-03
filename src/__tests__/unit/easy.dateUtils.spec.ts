@@ -11,6 +11,28 @@ import {
   isDateInRange,
 } from '../../utils/dateUtils';
 
+describe('isLeapYear', () => {
+  it('400으로 나눠지는 연도는 윤년이다', () => {
+    const isLeap = isLeapYear(2400);
+    expect(isLeap).toBe(true);
+  });
+
+  it('100으로 나눠지는 연도는 윤년이 아니다', () => {
+    const isLeap = isLeapYear(2100);
+    expect(isLeap).toBe(false);
+  });
+
+  it('4로 나눠지는 연도는 윤년이다', () => {
+    const isLeap = isLeapYear(2024);
+    expect(isLeap).toBe(true);
+  });
+
+  it('위 조건을 충족하지 못하는 연도는 윤년이 아니다', () => {
+    const isLeap = isLeapYear(2025);
+    expect(isLeap).toBe(false);
+  });
+});
+
 describe('getDaysInMonth', () => {
   it('1월은 31일 수를 반환한다', () => {});
 
