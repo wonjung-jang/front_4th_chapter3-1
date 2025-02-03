@@ -1,7 +1,7 @@
 import { Event } from '../types.ts';
 
 /**
- * 주어지 년도가 윤년인지 판별합니다.
+ * 주어진 년도가 윤년인지 판별합니다.
  * 윤년: 1년이 366일인 해로 2월이 29일까지 있다.
  * 평년: 1년이 365일인 해로 2월이 28일까지 있다.
  */
@@ -36,6 +36,9 @@ export function getWeekDates(date: Date): Date[] {
   return weekDates;
 }
 
+/**
+ * 주어진 날짜가 속한 월의 달력 배열을 반환합니다.
+ */
 export function getWeeksAtMonth(currentDate: Date) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -64,10 +67,16 @@ export function getWeeksAtMonth(currentDate: Date) {
   return weeks;
 }
 
+/**
+ * 주어진 날짜에 대한 이벤트가 있으면 반환합니다.
+ */
 export function getEventsForDay(events: Event[], date: number): Event[] {
   return events.filter((event) => new Date(event.date).getDate() === date);
 }
 
+/**
+ * 주어진 날짜에 대해서 "YYYY년 M월 n주" 형식으로 반환합니다.
+ */
 export function formatWeek(targetDate: Date) {
   const dayOfWeek = targetDate.getDay();
   const diffToThursday = 4 - dayOfWeek;
