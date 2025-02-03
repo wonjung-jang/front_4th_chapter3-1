@@ -9,6 +9,7 @@ import {
   getWeekDates,
   getWeeksAtMonth,
   isDateInRange,
+  isLeapYear,
 } from '../../utils/dateUtils';
 
 describe('isLeapYear', () => {
@@ -34,15 +35,29 @@ describe('isLeapYear', () => {
 });
 
 describe('getDaysInMonth', () => {
-  it('1월은 31일 수를 반환한다', () => {});
+  it('1월은 31일 수를 반환한다', () => {
+    const daysInJanuary = getDaysInMonth(2025, 1);
+    expect(daysInJanuary).toBe(31);
+  });
 
-  it('4월은 30일 일수를 반환한다', () => {});
+  it('4월은 30일 일수를 반환한다', () => {
+    const daysInApril = getDaysInMonth(2025, 4);
+    expect(daysInApril).toBe(30);
+  });
 
-  it('윤년의 2월에 대해 29일을 반환한다', () => {});
+  it('윤년의 2월에 대해 29일을 반환한다', () => {
+    const daysInFedruary = getDaysInMonth(2024, 2);
+    expect(daysInFedruary).toBe(29);
+  });
 
-  it('평년의 2월에 대해 28일을 반환한다', () => {});
+  it('평년의 2월에 대해 28일을 반환한다', () => {
+    const daysInFedruary = getDaysInMonth(2025, 2);
+    expect(daysInFedruary).toBe(28);
+  });
 
-  it('유효하지 않은 월에 대해 적절히 처리한다', () => {});
+  it('유효하지 않은 월에 대해 적절히 처리한다', () => {
+    expect(() => getDaysInMonth(2025, 15)).toThrow('유효하지 않은 월입니다.');
+  });
 });
 
 describe('getWeekDates', () => {
