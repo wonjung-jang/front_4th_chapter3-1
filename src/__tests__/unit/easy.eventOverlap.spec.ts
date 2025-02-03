@@ -52,9 +52,19 @@ describe('convertEventToDateRange', () => {
 });
 
 describe('isOverlapping', () => {
-  it('두 이벤트가 겹치는 경우 true를 반환한다', () => {});
+  it('두 이벤트가 겹치는 경우 true를 반환한다', () => {
+    const eventA = { date: '2024-07-01', startTime: '14:30', endTime: '15:30' } as Event;
+    const eventB = { date: '2024-07-01', startTime: '15:00', endTime: '16:00' } as Event;
+    const isOverlap = isOverlapping(eventA, eventB);
+    expect(isOverlap).toBe(true);
+  });
 
-  it('두 이벤트가 겹치지 않는 경우 false를 반환한다', () => {});
+  it('두 이벤트가 겹치지 않는 경우 false를 반환한다', () => {
+    const eventA = { date: '2024-07-01', startTime: '14:30', endTime: '15:30' } as Event;
+    const eventB = { date: '2024-07-01', startTime: '15:30', endTime: '16:30' } as Event;
+    const isOverlap = isOverlapping(eventA, eventB);
+    expect(isOverlap).toBe(false);
+  });
 });
 
 describe('findOverlappingEvents', () => {
