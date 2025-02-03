@@ -7,13 +7,25 @@ import {
 } from '../../utils/eventOverlap';
 
 describe('parseDateTime', () => {
-  it('2024-07-01 14:30을 정확한 Date 객체로 변환한다', () => {});
+  it('2024-07-01 14:30을 정확한 Date 객체로 변환한다', () => {
+    const parsedDateTime = parseDateTime('2024-07-01', '14:30');
+    expect(parsedDateTime).toEqual(new Date(2024, 6, 1, 14, 30));
+  });
 
-  it('잘못된 날짜 형식에 대해 Invalid Date를 반환한다', () => {});
+  it('잘못된 날짜 형식에 대해 Invalid Date를 반환한다', () => {
+    const parsedDateTime = parseDateTime('2024_07_01', '14:30');
+    expect(parsedDateTime.getTime()).toBeNaN();
+  });
 
-  it('잘못된 시간 형식에 대해 Invalid Date를 반환한다', () => {});
+  it('잘못된 시간 형식에 대해 Invalid Date를 반환한다', () => {
+    const parsedDateTime = parseDateTime('2024-07-01', '14/30');
+    expect(parsedDateTime.getTime()).toBeNaN();
+  });
 
-  it('날짜 문자열이 비어있을 때 Invalid Date를 반환한다', () => {});
+  it('날짜 문자열이 비어있을 때 Invalid Date를 반환한다', () => {
+    const parsedDateTime = parseDateTime('2024-07-01', '');
+    expect(parsedDateTime.getTime()).toBeNaN();
+  });
 });
 
 describe('convertEventToDateRange', () => {
