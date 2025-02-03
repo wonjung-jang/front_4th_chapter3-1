@@ -306,11 +306,23 @@ describe('fillZero', () => {
 });
 
 describe('formatDate', () => {
-  it('날짜를 YYYY-MM-DD 형식으로 포맷팅한다', () => {});
+  it('날짜를 YYYY-MM-DD 형식으로 포맷팅한다', () => {
+    const formattedDate = formatDate(new Date('2025-02-03'));
+    expect(formattedDate).toBe('2025-02-03');
+  });
 
-  it('day 파라미터가 제공되면 해당 일자로 포맷팅한다', () => {});
+  it('day 파라미터가 제공되면 해당 일자로 포맷팅한다', () => {
+    const formattedDate = formatDate(new Date('2025-02-03'), 13);
+    expect(formattedDate).toBe('2025-02-13');
+  });
 
-  it('월이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {});
+  it('월이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {
+    const formattedDate = formatDate(new Date(2025, 1, 3));
+    expect(formattedDate).toBe('2025-02-03');
+  });
 
-  it('일이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {});
+  it('일이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {
+    const formattedDate = formatDate(new Date(2025, 1, 3));
+    expect(formattedDate).toBe('2025-02-03');
+  });
 });
