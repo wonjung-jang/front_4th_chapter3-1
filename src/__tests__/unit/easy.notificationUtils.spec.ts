@@ -154,5 +154,9 @@ describe('getUpcomingEvents', () => {
 });
 
 describe('createNotificationMessage', () => {
-  it('올바른 알림 메시지를 생성해야 한다', () => {});
+  it('올바른 알림 메시지를 생성해야 한다', () => {
+    const event = events[0];
+    const message = createNotificationMessage(event);
+    expect(message).toBe('1분 후 팀 회의 일정이 시작됩니다.');
+  });
 });
