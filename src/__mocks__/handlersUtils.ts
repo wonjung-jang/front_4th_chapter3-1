@@ -6,4 +6,4 @@ import { setupHandlers } from './handlers';
 // ! 아래 이름을 사용하지 않아도 되니, 독립적이게 테스트를 구동할 수 있는 방법을 찾아보세요. 그리고 이 로직을 PR에 설명해주세요.
 export const setupMockHandlerCreation = (initEvents = [] as Event[]) => setupHandlers(initEvents);
 export const setupMockHandlerUpdating = (initEvents = [] as Event[]) => setupHandlers(initEvents);
-export const setupMockHandlerDeletion = (initEvents = [] as Event[]) => setupHandlers(initEvents);
+export const setupMockHandlerDeleting = (initEvents = [] as Event[]) => setupHandlers(initEvents);
