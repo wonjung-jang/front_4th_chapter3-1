@@ -25,7 +25,7 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
+        groups: ['builtin', 'external', ['parent', 'sibling'], 'index', 'object'],
         alphabetize: {
           order: 'asc',
           caseInsensitive: true,
