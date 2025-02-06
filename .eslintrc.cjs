@@ -8,6 +8,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:cypress/recommended',
     'plugin:import/warnings',
+    'plugin:@typescript-eslint/recommended',
   ],
   env: {
     browser: true,
@@ -20,7 +21,7 @@ module.exports = {
     ecmaVersion: 2022,
   },
   rules: {
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'off',
     'react/prop-types': 'off',
     'import/order': [
       'error',

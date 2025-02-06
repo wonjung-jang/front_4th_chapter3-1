@@ -36,6 +36,7 @@ interface CalendarSectionProps {
   setView: (view: 'week' | 'month') => void;
   holidays: { [key: string]: string };
 }
+
 export function CalendarSection(props: CalendarSectionProps) {
   const { currentDate, filteredEvents, notifiedEvents, navigate, view, setView, holidays } = props;
 
