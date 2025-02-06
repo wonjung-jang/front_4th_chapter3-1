@@ -24,7 +24,7 @@ describe('CalendarSection', () => {
     expect(tdList).toHaveLength(35);
   });
 
-  it('월간 view에서 주간 view로 변경하면 주간 view가 렌더링된다.', async () => {
+  it('월간 view에서 주간 view로 변경하면 view의 값이 week로 변경된다.', async () => {
     const mockSetView = vi.fn();
 
     render(
@@ -70,7 +70,7 @@ describe('CalendarSection', () => {
     expect(tdList).toHaveLength(7);
   });
 
-  it('주간 view에서 월간 view로 변경하면 월간 view가 렌더링된다.', async () => {
+  it('주간 view에서 월간 view로 변경하면 view의 값이 month로 변경된다.', async () => {
     const mockSetView = vi.fn();
 
     render(
