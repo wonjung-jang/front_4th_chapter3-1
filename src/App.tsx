@@ -11,7 +11,7 @@ import { useEventForm } from './hooks/useEventForm.ts';
 import { useEventOperations } from './hooks/useEventOperations.ts';
 import { useNotifications } from './hooks/useNotifications.ts';
 import { useSearch } from './hooks/useSearch.ts';
-import { Event } from './types';
+import { Event, EventForm } from './types';
 
 const notificationOptions = [
   { value: 1, label: '1분 전' },
@@ -55,6 +55,35 @@ function App() {
     editEvent,
   } = useEventForm();
 
+  const eventForm: EventForm = {
+    title,
+    date,
+    startTime,
+    endTime,
+    description,
+    location,
+    category,
+    repeat: {
+      type: repeatType,
+      interval: repeatInterval,
+      endDate: repeatEndDate,
+    },
+    notificationTime,
+  };
+
+  const setEventForm = {
+    setTitle,
+    setDate,
+    setDescription,
+    setLocation,
+    setCategory,
+    setIsRepeating,
+    setRepeatType,
+    setRepeatInterval,
+    setRepeatEndDate,
+    setNotificationTime,
+  };
+
   const { events, saveEvent, deleteEvent } = useEventOperations(Boolean(editingEvent), () =>
     setEditingEvent(null)
   );
@@ -70,13 +99,8 @@ function App() {
     <Box w="full" h="100vh" m="auto" p={5}>
       <Flex gap={6} h="full">
         <EventEditSection
-          title={title}
-          date={date}
-          startTime={startTime}
-          endTime={endTime}
-          description={description}
-          location={location}
-          category={category}
+          eventForm={eventForm}
+          setEventForm={setEventForm}
           events={events}
           setOverlappingEvents={setOverlappingEvents}
           setIsOverlapDialogOpen={setIsOverlapDialogOpen}
@@ -85,23 +109,9 @@ function App() {
           endTimeError={endTimeError}
           editingEvent={editingEvent}
           isRepeating={isRepeating}
-          repeatType={repeatType}
-          repeatInterval={repeatInterval}
-          repeatEndDate={repeatEndDate}
-          notificationTime={notificationTime}
-          setTitle={setTitle}
-          setDate={setDate}
           handleStartTimeChange={handleStartTimeChange}
           handleEndTimeChange={handleEndTimeChange}
           resetForm={resetForm}
-          setDescription={setDescription}
-          setLocation={setLocation}
-          setCategory={setCategory}
-          setIsRepeating={setIsRepeating}
-          setRepeatType={setRepeatType}
-          setRepeatInterval={setRepeatInterval}
-          setRepeatEndDate={setRepeatEndDate}
-          setNotificationTime={setNotificationTime}
         />
 
         <CalendarSection
@@ -126,22 +136,12 @@ function App() {
       </Flex>
 
       <WarningAlert
+        eventForm={eventForm}
         isOverlapDialogOpen={isOverlapDialogOpen}
         setIsOverlapDialogOpen={setIsOverlapDialogOpen}
         overlappingEvents={overlappingEvents}
         saveEvent={saveEvent}
         editingEvent={editingEvent}
-        title={title}
-        date={date}
-        startTime={startTime}
-        endTime={endTime}
-        description={description}
-        location={location}
-        category={category}
-        repeatType={repeatType}
-        repeatInterval={repeatInterval}
-        repeatEndDate={repeatEndDate}
-        notificationTime={notificationTime}
         isRepeating={isRepeating}
       />
 

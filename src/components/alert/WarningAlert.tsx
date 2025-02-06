@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
-import { Event } from '../../types';
+import { Event, EventForm } from '../../types';
 
 interface WarningAlertProps {
   isOverlapDialogOpen: boolean;
@@ -18,17 +18,7 @@ interface WarningAlertProps {
   overlappingEvents: Event[];
   saveEvent: (event: Event) => void;
   editingEvent: Event | null;
-  title: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  description: string;
-  location: string;
-  category: string;
-  repeatType: string;
-  repeatInterval: number;
-  repeatEndDate: string;
-  notificationTime: number;
+  eventForm: EventForm;
   isRepeating: boolean;
 }
 
@@ -39,17 +29,7 @@ export function WarningAlert(props: WarningAlertProps) {
     overlappingEvents,
     saveEvent,
     editingEvent,
-    title,
-    date,
-    startTime,
-    endTime,
-    description,
-    location,
-    category,
-    repeatType,
-    repeatInterval,
-    repeatEndDate,
-    notificationTime,
+    eventForm,
     isRepeating,
   } = props;
 
@@ -86,20 +66,20 @@ export function WarningAlert(props: WarningAlertProps) {
               onClick={() => {
                 setIsOverlapDialogOpen(false);
                 saveEvent({
-                  id: editingEvent ? editingEvent.id : undefined,
-                  title,
-                  date,
-                  startTime,
-                  endTime,
-                  description,
-                  location,
-                  category,
+                  id: editingEvent ? editingEvent.id : '',
+                  title: eventForm.title,
+                  date: eventForm.date,
+                  startTime: eventForm.startTime,
+                  endTime: eventForm.endTime,
+                  description: eventForm.description,
+                  location: eventForm.location,
+                  category: eventForm.category,
                   repeat: {
-                    type: isRepeating ? repeatType : 'none',
-                    interval: repeatInterval,
-                    endDate: repeatEndDate || undefined,
+                    type: isRepeating ? eventForm.repeat.type : 'none',
+                    interval: eventForm.repeat.interval,
+                    endDate: eventForm.repeat.endDate || undefined,
                   },
-                  notificationTime,
+                  notificationTime: eventForm.notificationTime,
                 });
               }}
               ml={3}

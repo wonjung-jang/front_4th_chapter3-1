@@ -8,12 +8,12 @@ import {
   Input,
   Select,
   Tooltip,
-  useToast,
   VStack,
 } from '@chakra-ui/react';
+import React from 'react';
 
+import { useAddOrUpdateEvent } from '../../hooks/useAddOrUpdateEvent';
 import { Event, EventForm, RepeatType } from '../../types';
-import { findOverlappingEvents } from '../../utils/eventOverlap';
 import { getTimeErrorMessage } from '../../utils/timeValidation';
 
 const categories = ['업무', '개인', '가족', '기타'];
@@ -26,66 +26,52 @@ const notificationOptions = [
 ];
 
 interface EventEditSectionProps {
+  eventForm: EventForm;
+  setEventForm: {
+    setTitle: (title: string) => void;
+    setDate: (date: string) => void;
+    setDescription: (description: string) => void;
+    setLocation: (location: string) => void;
+    setCategory: (category: string) => void;
+    setIsRepeating: (isRepeating: boolean) => void;
+    setRepeatType: (repeatType: RepeatType) => void;
+    setRepeatInterval: (repeatInterval: number) => void;
+    setRepeatEndDate: (repeatEndDate: string) => void;
+    setNotificationTime: (notificationTime: number) => void;
+  };
   events: Event[];
   setOverlappingEvents: (events: Event[]) => void;
   setIsOverlapDialogOpen: (isOpen: boolean) => void;
   saveEvent: (event: Event) => Promise<void>;
-  title: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  description: string;
-  location: string;
-  category: string;
   startTimeError: string | null;
   endTimeError: string | null;
   editingEvent: Event | null;
   isRepeating: boolean;
-  repeatType: RepeatType;
-  repeatInterval: number;
-  repeatEndDate: string;
-  notificationTime: number;
-  setTitle: (title: string) => void;
-  setDate: (date: string) => void;
   handleStartTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleEndTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   resetForm: () => void;
-  setDescription: (description: string) => void;
-  setLocation: (location: string) => void;
-  setCategory: (category: string) => void;
-  setIsRepeating: (isRepeating: boolean) => void;
-  setRepeatType: (repeatType: RepeatType) => void;
-  setRepeatInterval: (repeatInterval: number) => void;
-  setRepeatEndDate: (repeatEndDate: string) => void;
-  setNotificationTime: (notificationTime: number) => void;
 }
 
 export function EventEditSection(props: EventEditSectionProps) {
   const {
+    eventForm,
+    setEventForm,
     events,
     setOverlappingEvents,
     setIsOverlapDialogOpen,
     saveEvent,
-    title,
-    date,
-    startTime,
-    endTime,
-    description,
-    location,
-    category,
     startTimeError,
     endTimeError,
     editingEvent,
     isRepeating,
-    repeatType,
-    repeatInterval,
-    repeatEndDate,
-    notificationTime,
-    setTitle,
-    setDate,
     handleStartTimeChange,
     handleEndTimeChange,
     resetForm,
+  } = props;
+
+  const {
+    setTitle,
+    setDate,
     setDescription,
     setLocation,
     setCategory,
@@ -94,57 +80,20 @@ export function EventEditSection(props: EventEditSectionProps) {
     setRepeatInterval,
     setRepeatEndDate,
     setNotificationTime,
-  } = props;
+  } = setEventForm;
 
-  const toast = useToast();
-
-  const addOrUpdateEvent = async () => {
-    if (!title || !date || !startTime || !endTime) {
-      toast({
-        title: '필수 정보를 모두 입력해주세요.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    if (startTimeError || endTimeError) {
-      toast({
-        title: '시간 설정을 확인해주세요.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    const eventData: Event | EventForm = {
-      id: editingEvent ? editingEvent.id : undefined,
-      title,
-      date,
-      startTime,
-      endTime,
-      description,
-      location,
-      category,
-      repeat: {
-        type: isRepeating ? repeatType : 'none',
-        interval: repeatInterval,
-        endDate: repeatEndDate || undefined,
-      },
-      notificationTime,
-    };
-
-    const overlapping = findOverlappingEvents(eventData, events);
-    if (overlapping.length > 0) {
-      setOverlappingEvents(overlapping);
-      setIsOverlapDialogOpen(true);
-    } else {
-      await saveEvent(eventData as Event);
-      resetForm();
-    }
-  };
+  const { addOrUpdateEvent } = useAddOrUpdateEvent({
+    eventForm,
+    events,
+    setOverlappingEvents,
+    setIsOverlapDialogOpen,
+    saveEvent,
+    startTimeError,
+    endTimeError,
+    editingEvent,
+    isRepeating,
+    resetForm,
+  });
 
   return (
     <VStack w="400px" spacing={5} align="stretch">
@@ -152,12 +101,12 @@ export function EventEditSection(props: EventEditSectionProps) {
 
       <FormControl>
         <FormLabel>제목</FormLabel>
-        <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <Input value={eventForm.title} onChange={(e) => setTitle(e.target.value)} />
       </FormControl>
 
       <FormControl>
         <FormLabel>날짜</FormLabel>
-        <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        <Input type="date" value={eventForm.date} onChange={(e) => setDate(e.target.value)} />
       </FormControl>
 
       <HStack width="100%">
@@ -166,9 +115,9 @@ export function EventEditSection(props: EventEditSectionProps) {
           <Tooltip label={startTimeError} isOpen={!!startTimeError} placement="top">
             <Input
               type="time"
-              value={startTime}
+              value={eventForm.startTime}
               onChange={handleStartTimeChange}
-              onBlur={() => getTimeErrorMessage(startTime, endTime)}
+              onBlur={() => getTimeErrorMessage(eventForm.startTime, eventForm.endTime)}
               isInvalid={!!startTimeError}
             />
           </Tooltip>
@@ -178,9 +127,9 @@ export function EventEditSection(props: EventEditSectionProps) {
           <Tooltip label={endTimeError} isOpen={!!endTimeError} placement="top">
             <Input
               type="time"
-              value={endTime}
+              value={eventForm.endTime}
               onChange={handleEndTimeChange}
-              onBlur={() => getTimeErrorMessage(startTime, endTime)}
+              onBlur={() => getTimeErrorMessage(eventForm.startTime, eventForm.endTime)}
               isInvalid={!!endTimeError}
             />
           </Tooltip>
@@ -189,17 +138,17 @@ export function EventEditSection(props: EventEditSectionProps) {
 
       <FormControl>
         <FormLabel>설명</FormLabel>
-        <Input value={description} onChange={(e) => setDescription(e.target.value)} />
+        <Input value={eventForm.description} onChange={(e) => setDescription(e.target.value)} />
       </FormControl>
 
       <FormControl>
         <FormLabel>위치</FormLabel>
-        <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+        <Input value={eventForm.location} onChange={(e) => setLocation(e.target.value)} />
       </FormControl>
 
       <FormControl>
         <FormLabel>카테고리</FormLabel>
-        <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <Select value={eventForm.category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">카테고리 선택</option>
           {categories.map((cat) => (
             <option key={cat} value={cat}>
@@ -219,7 +168,7 @@ export function EventEditSection(props: EventEditSectionProps) {
       <FormControl>
         <FormLabel>알림 설정</FormLabel>
         <Select
-          value={notificationTime}
+          value={eventForm.notificationTime}
           onChange={(e) => setNotificationTime(Number(e.target.value))}
         >
           {notificationOptions.map((option) => (
@@ -235,7 +184,7 @@ export function EventEditSection(props: EventEditSectionProps) {
           <FormControl>
             <FormLabel>반복 유형</FormLabel>
             <Select
-              value={repeatType}
+              value={eventForm.repeat.type}
               onChange={(e) => setRepeatType(e.target.value as RepeatType)}
             >
               <option value="daily">매일</option>
@@ -249,7 +198,7 @@ export function EventEditSection(props: EventEditSectionProps) {
               <FormLabel>반복 간격</FormLabel>
               <Input
                 type="number"
-                value={repeatInterval}
+                value={eventForm.repeat.interval}
                 onChange={(e) => setRepeatInterval(Number(e.target.value))}
                 min={1}
               />
@@ -258,7 +207,7 @@ export function EventEditSection(props: EventEditSectionProps) {
               <FormLabel>반복 종료일</FormLabel>
               <Input
                 type="date"
-                value={repeatEndDate}
+                value={eventForm.repeat.endDate}
                 onChange={(e) => setRepeatEndDate(e.target.value)}
               />
             </FormControl>
