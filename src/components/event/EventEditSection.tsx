@@ -10,11 +10,12 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useAddOrUpdateEvent } from '../../hooks/useAddOrUpdateEvent';
 import { Event, EventForm, RepeatType } from '../../types';
 import { getTimeErrorMessage } from '../../utils/timeValidation';
+import { WarningAlert } from '../alert/WarningAlert';
 
 const categories = ['업무', '개인', '가족', '기타'];
 const notificationOptions = [
@@ -40,8 +41,6 @@ interface EventEditSectionProps {
     setNotificationTime: (notificationTime: number) => void;
   };
   events: Event[];
-  setOverlappingEvents: (events: Event[]) => void;
-  setIsOverlapDialogOpen: (isOpen: boolean) => void;
   saveEvent: (event: Event) => Promise<void>;
   startTimeError: string | null;
   endTimeError: string | null;
@@ -57,8 +56,6 @@ export function EventEditSection(props: EventEditSectionProps) {
     eventForm,
     setEventForm,
     events,
-    setOverlappingEvents,
-    setIsOverlapDialogOpen,
     saveEvent,
     startTimeError,
     endTimeError,
@@ -68,6 +65,8 @@ export function EventEditSection(props: EventEditSectionProps) {
     handleEndTimeChange,
     resetForm,
   } = props;
+  const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
+  const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
 
   const {
     setTitle,
@@ -218,6 +217,16 @@ export function EventEditSection(props: EventEditSectionProps) {
       <Button data-testid="event-submit-button" onClick={addOrUpdateEvent} colorScheme="blue">
         {editingEvent ? '일정 수정' : '일정 추가'}
       </Button>
+
+      <WarningAlert
+        eventForm={eventForm}
+        isOverlapDialogOpen={isOverlapDialogOpen}
+        setIsOverlapDialogOpen={setIsOverlapDialogOpen}
+        overlappingEvents={overlappingEvents}
+        saveEvent={saveEvent}
+        editingEvent={editingEvent}
+        isRepeating={isRepeating}
+      />
     </VStack>
   );
 }

@@ -1,7 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useState } from 'react';
 
-import { WarningAlert } from './components/alert/WarningAlert.tsx';
 import { CalendarSection } from './components/calendar/CalendarSection.tsx';
 import { EventEditSection } from './components/event/EventEditSection.tsx';
 import { SearchEventSection } from './components/event/SearchEventSection.tsx';
@@ -92,9 +90,6 @@ function App() {
   const { view, setView, currentDate, holidays, navigate } = useCalendarView();
   const { searchTerm, filteredEvents, setSearchTerm } = useSearch(events, currentDate, view);
 
-  const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
-  const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
-
   return (
     <Box w="full" h="100vh" m="auto" p={5}>
       <Flex gap={6} h="full">
@@ -102,8 +97,6 @@ function App() {
           eventForm={eventForm}
           setEventForm={setEventForm}
           events={events}
-          setOverlappingEvents={setOverlappingEvents}
-          setIsOverlapDialogOpen={setIsOverlapDialogOpen}
           saveEvent={saveEvent}
           startTimeError={startTimeError}
           endTimeError={endTimeError}
@@ -134,16 +127,6 @@ function App() {
           deleteEvent={deleteEvent}
         />
       </Flex>
-
-      <WarningAlert
-        eventForm={eventForm}
-        isOverlapDialogOpen={isOverlapDialogOpen}
-        setIsOverlapDialogOpen={setIsOverlapDialogOpen}
-        overlappingEvents={overlappingEvents}
-        saveEvent={saveEvent}
-        editingEvent={editingEvent}
-        isRepeating={isRepeating}
-      />
 
       {notifications.length > 0 && (
         <Notification notifications={notifications} setNotifications={setNotifications} />
