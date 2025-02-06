@@ -57,7 +57,13 @@ export function CalendarSection(props: CalendarSectionProps) {
           <Tbody>
             <Tr>
               {weekDates.map((date) => (
-                <Td key={date.toISOString()} height="100px" verticalAlign="top" width="14.28%">
+                <Td
+                  key={date.toISOString()}
+                  role="gridcell"
+                  height="100px"
+                  verticalAlign="top"
+                  width="14.28%"
+                >
                   <Text fontWeight="bold">{date.getDate()}</Text>
                   {filteredEvents
                     .filter((event) => new Date(event.date).toDateString() === date.toDateString())
@@ -117,6 +123,7 @@ export function CalendarSection(props: CalendarSectionProps) {
                   return (
                     <Td
                       key={dayIndex}
+                      role="gridcell"
                       height="100px"
                       verticalAlign="top"
                       width="14.28%"
