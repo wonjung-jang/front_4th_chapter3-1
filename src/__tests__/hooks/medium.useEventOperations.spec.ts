@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 import {
   setupMockHandlerCreation,
-  setupMockHandlerDeletion,
+  setupMockHandlerDeleting,
   setupMockHandlerUpdating,
 } from '../../__mocks__/handlersUtils.ts';
 import { useEventOperations } from '../../hooks/useEventOperations.ts';
@@ -96,7 +96,7 @@ describe('정상적인 상황', () => {
   });
 
   it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', async () => {
-    setupMockHandlerDeletion();
+    setupMockHandlerDeleting();
     const { result } = renderHook(() => useEventOperations(false));
 
     await act(async () => {
